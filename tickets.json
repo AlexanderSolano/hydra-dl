@@ -1,0 +1,82 @@
+[
+  {
+    "title": "T-000: docs: Create Architecture Decision Records (ADRs)",
+    "body": "Establish the /docs/adr directory and create initial records for key decisions: 1. Clean Architecture structure, 2. Use of yt-dlp with Node.js, 3. Sparse file storage strategy.",
+    "labels": ["chore", "documentation", "architecture"]
+  },
+  {
+    "title": "T-001: chore(setup): Initialize Repo, Tooling & Makefile",
+    "body": "Configure pyproject.toml (uv, ruff, mypy, pytest), create Hexagonal folder structure, and the Makefile to standardize commands (install, test, lint).",
+    "labels": ["chore", "setup", "dx"]
+  },
+  {
+    "title": "T-002: ci(github): Configure Strict Quality Pipeline",
+    "body": "Create GitHub Actions workflow (.github/workflows/quality.yml). Must execute Linter, Type Checker, and Unit Tests. Pipeline must fail on errors.",
+    "labels": ["ci", "devops"]
+  },
+  {
+    "title": "T-003: feat(config): Implement Centralized Settings",
+    "body": "Implement app/config/settings.py using pydantic-settings. Support .env loading and LOCAL/CLOUD context switching.",
+    "labels": ["feat", "config"]
+  },
+  {
+    "title": "T-004: feat(core): Define Domain Entities & Ports",
+    "body": "Create dataclasses (VideoMetadata, DownloadJob) and Abstract Protocols (IExtractor, IDownloader, IStorage). Add Pydantic validation for Inputs.",
+    "labels": ["feat", "core", "architecture"]
+  },
+  {
+    "title": "T-005: feat(core): Implement Global Error Handling",
+    "body": "Define domain exception hierarchy (VideoNotFoundError, StorageQuotaExceeded) to decouple infrastructure errors from business logic.",
+    "labels": ["feat", "core"]
+  },
+  {
+    "title": "T-006: feat(core): Implement Download Orchestration Logic",
+    "body": "Create DownloadVideoUseCase. Pure logic: Get Info -> Calculate Segments -> Reserve Space -> Orchestrate Parallel Download. Mock dependencies for testing.",
+    "labels": ["feat", "core", "logic"]
+  },
+  {
+    "title": "T-007: feat(core): Implement Progress Tracking Aggregator",
+    "body": "Logic to aggregate progress from N concurrent segments and calculate speed (MB/s) and ETA in real-time.",
+    "labels": ["feat", "core"]
+  },
+  {
+    "title": "T-008: feat(infra): Implement yt-dlp Extractor Adapter",
+    "body": "Implement IExtractor using yt-dlp. MUST use 'js_runtimes': ['node'] and run in ThreadPoolExecutor to avoid blocking asyncio loop.",
+    "labels": ["feat", "infrastructure", "adapter"]
+  },
+  {
+    "title": "T-009: feat(infra): Implement Local Sparse File Storage",
+    "body": "Implement IStorage with aiofiles. Must pre-allocate file size (sparse technique) and allow thread-safe random access writes.",
+    "labels": ["feat", "infrastructure", "storage"]
+  },
+  {
+    "title": "T-010: feat(infra): Implement Aiohttp High-Perf Downloader",
+    "body": "Implement IDownloader using aiohttp. Handle ClientSession, Range Headers, Timeouts, and Exponential Backoff for retries.",
+    "labels": ["feat", "infrastructure", "network"]
+  },
+  {
+    "title": "T-011: feat(cli): Build CLI App with Typer & Rich",
+    "body": "Configure cli.py. Inject local infrastructure adapters. Render live progress table using Rich library.",
+    "labels": ["feat", "cli", "ui"]
+  },
+  {
+    "title": "T-012: feat(api): Setup FastAPI & Dependency Injection",
+    "body": "Configure main.py and dependencies.py. Implement conditional injection logic (LOCAL vs CLOUD) based on env vars.",
+    "labels": ["feat", "api", "backend"]
+  },
+  {
+    "title": "T-013: feat(api): Implement Download & Status Endpoints",
+    "body": "Create POST /tasks and GET /tasks/{id}. Validate DTOs with Pydantic. Return 202 Accepted.",
+    "labels": ["feat", "api"]
+  },
+  {
+    "title": "T-014: feat(observability): Implement Structured Logging",
+    "body": "Configure structlog. Replace print statements with structured JSON logs containing context (Trace IDs).",
+    "labels": ["feat", "observability"]
+  },
+  {
+    "title": "T-015: chore(docker): Create Optimized Dockerfile",
+    "body": "Create multi-stage Dockerfile. Ensure Node.js is installed for runtime requirements (yt-dlp dependency).",
+    "labels": ["chore", "devops"]
+  }
+]
